@@ -1,8 +1,23 @@
 class Scrabble
 
-  def score(word)
-    1
+  def score(word = nil)
+    if word == nil || word == ""
+      return 0
+    else
+      letters = word.upcase.split('')
+      value = letters.map { |letter| point_values.values_at(letter)[0] }
+      tally = value.inject(:+)
+    end
   end
+
+  def score_with_multipliers(word, multiplier = 1)
+    double_letters = word.split("").detect{ |l| word.count(l) > 1 }
+    modified = word.concat(double_letters)
+    require 'pry'; binding.pry
+    value = score(modified)
+    tally = value * multiplier
+  end
+
 
   def point_values
     {
@@ -16,3 +31,6 @@ class Scrabble
     }
   end
 end
+
+game = Scrabble.new
+game.score_with_multipliers("hello")
